@@ -25,22 +25,27 @@ npm start                    # needs real env if you want Discord or artifact
 
 ## RSS feeds
 
-- **`news.smol.ai` (AINews)** does not expose a current first-party RSS URL (common paths 404). This repo defaults to the **legacy AINews archive** on Buttondown: `https://buttondown.com/ainews/rss` (updates stopped after the move to smol.ai; entries are useful context but not “live”).
-- **`RSS_FEED_URLS`** — comma- or newline-separated list of feed URLs. If the variable is **unset**, the default above is used. Set it explicitly in `.env` to add or replace feeds, for example:
+Default feeds (when `RSS_FEED_URLS` is **unset**):
+
+| Source | URL |
+|--------|-----|
+| Hugging Face Blog | `https://huggingface.co/blog/feed.xml` |
+| Google AI Blog | `https://blog.google/technology/ai/rss/` |
+| MIT Technology Review | `https://www.technologyreview.com/feed/` |
+
+- **`RSS_FEED_URLS`** — comma- or newline-separated list of feed URLs. Set it in `.env` to add or replace feeds:
 
   ```bash
-  RSS_FEED_URLS=https://buttondown.com/ainews/rss,https://changelog.com/posts/index.xml
+  RSS_FEED_URLS=https://huggingface.co/blog/feed.xml,https://openai.com/blog/rss/
   ```
 
-- To **disable** extra RSS ingestion, set an **empty** value (env var present but blank):
+- To **disable** RSS ingestion, set an **empty** value:
 
   ```bash
   RSS_FEED_URLS=
   ```
 
-  In GitHub Actions, **do not** define `RSS_FEED_URLS` in the workflow unless you want to override the default; an empty Actions variable can turn feeds off.
-
-Noise titles (e.g. “we have moved”) are skipped when pulling items.
+Noise titles (e.g. "subscribe now") are skipped.
 
 ## Discord setup
 

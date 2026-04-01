@@ -18,7 +18,7 @@ const DEV_FEED_RSS_URLS = [
 const rss = new Parser();
 
 function rssNoiseTitle(title: string): boolean {
-  return /we have moved|please help us move/i.test(title);
+  return /we have moved|please help us move|subscribe now/i.test(title);
 }
 
 function feedSourceLabel(feedUrl: string, feedTitle?: string): string {

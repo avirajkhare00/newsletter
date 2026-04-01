@@ -2,8 +2,12 @@ import "dotenv/config";
 
 const t = (v: string | undefined) => (v ?? "").trim();
 
-/** Legacy AINews (smol.ai) archive; news.smol.ai has no first-party RSS. */
-const DEFAULT_RSS_FEED_URLS = ["https://buttondown.com/ainews/rss"];
+/** Native RSS feeds from AI labs and tech publications. */
+const DEFAULT_RSS_FEED_URLS = [
+  "https://huggingface.co/blog/feed.xml",
+  "https://blog.google/technology/ai/rss/",
+  "https://www.technologyreview.com/feed/",
+];
 
 function parseUrlList(raw: string | undefined, fallback: string[]): string[] {
   if (raw === undefined) return [...fallback];
@@ -27,8 +31,8 @@ export const OPENAI_MODEL = t(process.env.OPENAI_MODEL) || "gpt-4o-mini";
 export const NEWSLETTER_ARTIFACT_PATH = t(process.env.NEWSLETTER_ARTIFACT_PATH);
 
 /**
- * Extra RSS/Atom feeds (comma or newline separated).
- * If env is unset, defaults to legacy AINews Buttondown RSS. Set to empty to disable.
+ * RSS/Atom feeds (comma or newline separated).
+ * If env is unset, defaults to HuggingFace, Google AI, MIT Tech Review. Set to empty to disable.
  */
 export const RSS_FEED_URLS = parseUrlList(
   process.env.RSS_FEED_URLS,
