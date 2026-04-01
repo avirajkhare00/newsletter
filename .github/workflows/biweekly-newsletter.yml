@@ -26,14 +26,16 @@ concurrency:
 jobs:
   publish-newsletter:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run date (UTC)
         id: meta
         run: echo "date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: npm
@@ -50,7 +52,7 @@ jobs:
           NEWSLETTER_ARTIFACT_PATH: newsletter/digest.md
 
       - name: Publish GitHub Release (digest markdown)
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.2.2
         with:
           tag_name: newsletter-${{ github.run_id }}
           name: Newsletter ${{ steps.meta.outputs.date }}
