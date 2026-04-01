@@ -10,6 +10,7 @@ function lineForDiscord(s: Story, idx: number): string {
 const ORDER: string[] = [
   Category.HACKER_NEWS,
   Category.DEV_COMMUNITY,
+  Category.RSS_FEEDS,
   Category.OPEN_SOURCE,
   Category.RESEARCH,
 ];

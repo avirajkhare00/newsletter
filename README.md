@@ -1,6 +1,6 @@
 # Bi-weekly dev newsletter
 
-Gathers developer-facing links (Hacker News, dev feeds, trending GitHub repos, arXiv CS), optionally **curates** them with two OpenAI steps (shortlist + writer), then:
+Gathers developer-facing links (Hacker News, dev feeds, **RSS/Atom newsletters**, trending GitHub repos, arXiv CS), optionally **curates** them with two OpenAI steps (shortlist + writer), then:
 
 - **Discord** — posts to a channel via webhook (optional).
 - **GitHub Releases** — creates a release with the digest as the **release body** and a **`digest.md`** attachment (always, in CI).
@@ -22,6 +22,25 @@ npm install
 DRY_RUN=1 npm run dry-run    # preview in terminal only
 npm start                    # needs real env if you want Discord or artifact
 ```
+
+## RSS feeds
+
+- **`news.smol.ai` (AINews)** does not expose a current first-party RSS URL (common paths 404). This repo defaults to the **legacy AINews archive** on Buttondown: `https://buttondown.com/ainews/rss` (updates stopped after the move to smol.ai; entries are useful context but not “live”).
+- **`RSS_FEED_URLS`** — comma- or newline-separated list of feed URLs. If the variable is **unset**, the default above is used. Set it explicitly in `.env` to add or replace feeds, for example:
+
+  ```bash
+  RSS_FEED_URLS=https://buttondown.com/ainews/rss,https://changelog.com/posts/index.xml
+  ```
+
+- To **disable** extra RSS ingestion, set an **empty** value (env var present but blank):
+
+  ```bash
+  RSS_FEED_URLS=
+  ```
+
+  In GitHub Actions, **do not** define `RSS_FEED_URLS` in the workflow unless you want to override the default; an empty Actions variable can turn feeds off.
+
+Noise titles (e.g. “we have moved”) are skipped when pulling items.
 
 ## Discord setup
 
@@ -60,6 +79,7 @@ Enable **Workflow permissions** so releases can be created:
 | Name | Purpose |
 |------|---------|
 | `OPENAI_MODEL` | Override model (default in app: `gpt-4o-mini`) |
+| `RSS_FEED_URLS` | Optional override; blank value disables RSS (see **RSS feeds** above) |
 
 ### Triggers
 

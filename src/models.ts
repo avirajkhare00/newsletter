@@ -1,6 +1,7 @@
 export const Category = {
   HACKER_NEWS: "Hacker News",
   DEV_COMMUNITY: "Dev & product feeds",
+  RSS_FEEDS: "RSS & newsletters",
   OPEN_SOURCE: "Trending on GitHub",
   RESEARCH: "arXiv (CS)",
 } as const;

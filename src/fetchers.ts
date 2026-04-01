@@ -1,4 +1,5 @@
 import Parser from "rss-parser";
+import { RSS_FEED_URLS } from "./config.js";
 import type { Story } from "./models.js";
 import { Category } from "./models.js";
 
@@ -15,6 +16,51 @@ const DEV_FEED_RSS_URLS = [
 ];
 
 const rss = new Parser();
+
+function rssNoiseTitle(title: string): boolean {
+  return /we have moved|please help us move/i.test(title);
+}
+
+function feedSourceLabel(feedUrl: string, feedTitle?: string): string {
+  try {
+    return new URL(feedUrl).hostname.replace(/^www\./, "");
+  } catch {
+    return (feedTitle ?? "rss").replace(/\s+/g, " ").slice(0, 48);
+  }
+}
+
+/** Fetches configured RSS/Atom feeds (see RSS_FEED_URLS in config). */
+export async function fetchConfiguredRssFeeds(
+  urls: string[],
+  perFeed = 5,
+): Promise<Story[]> {
+  if (!urls.length) return [];
+  const out: Story[] = [];
+  for (const feedUrl of urls) {
+    const r = await fetch(feedUrl, { headers: UA });
+    if (!r.ok) throw new Error(`${feedUrl}: ${r.status}`);
+    const text = await r.text();
+    const feed = await rss.parseString(text);
+    const source = feedSourceLabel(feedUrl, feed.title);
+    let n = 0;
+    for (const e of feed.items) {
+      if (n >= perFeed) break;
+      const title = (e.title ?? "").replace(/\n/g, " ").trim();
+      let link = (e.link ?? "").trim();
+      if (Array.isArray(e.links) && e.links[0]?.href)
+        link = String(e.links[0].href).trim() || link;
+      if (!title || !link || rssNoiseTitle(title)) continue;
+      out.push({
+        title,
+        url: link,
+        category: Category.RSS_FEEDS,
+        source,
+      });
+      n++;
+    }
+  }
+  return out;
+}
 
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const r = await fetch(url, { ...init, headers: { ...UA, ...init?.headers } });
@@ -165,14 +211,15 @@ async function safe(
 }
 
 export async function gatherAll(): Promise<Story[]> {
-  const [hn, gh, dev, daily] = await Promise.all([
+  const [hn, gh, dev, daily, rssExtra] = await Promise.all([
     safe("hacker_news", fetchHackerNews),
     safe("github", fetchGithubTrending),
     safe("dev_to", fetchDevTo),
     safe("dev_feed_rss", fetchDevFeedRss),
+    safe("rss_feeds", () => fetchConfiguredRssFeeds(RSS_FEED_URLS)),
   ]);
   // arXiv rate-limits bursty parallel traffic; run after other fetches.
   await new Promise((r) => setTimeout(r, 2500));
   const ax = await safe("arxiv", fetchArxiv);
-  return [...hn, ...daily, ...dev, ...gh, ...ax];
+  return [...hn, ...daily, ...dev, ...rssExtra, ...gh, ...ax];
 }
