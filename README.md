@@ -109,7 +109,3 @@ After you **fork** this repository on GitHub, everything below applies to **your
 5. **Releases and runs** — scheduled and manual runs operate on **your** default branch and create **Releases on your fork**. They are independent of the upstream repo.
 
 6. **Customize** — change sources in `src/fetchers.ts`, prompts in `src/curate.ts`, cadence in `.github/workflows/biweekly-newsletter.yml`, or package metadata in `package.json`.
-
-## License
-
-If no license file is present in the repo, add one in your fork when you decide how you want to share the project.
