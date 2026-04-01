@@ -25,7 +25,7 @@ export const DRY_RUN = ["1", "true", "yes"].includes(
 
 /** OpenAI — used for two-agent curation (shortlist + writer). */
 export const OPENAI_API_KEY = t(process.env.OPENAI_API_KEY);
-export const OPENAI_MODEL = t(process.env.OPENAI_MODEL) || "gpt-4o-mini";
+export const OPENAI_MODEL = t(process.env.OPENAI_MODEL) || "gpt-4.1-mini";
 
 /** If set, the rendered digest is written here (parent dirs created as needed). */
 export const NEWSLETTER_ARTIFACT_PATH = t(process.env.NEWSLETTER_ARTIFACT_PATH);

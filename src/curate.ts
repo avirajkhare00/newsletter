@@ -111,7 +111,7 @@ async function agentWriteNewsletter(
     "- Start with one title line: **Bi-weekly dev digest — YYYY-MM-DD** (use today's UTC date).",
     "- ### From the editors — expand fortnight_brief slightly (still no new factual claims).",
     "- ### Themes — bullets from themes; you may merge or rephrase briefly.",
-    "### Picks — for each pick: a line **Title** then 1–2 sentences of hook (may combine editor_note + your voice), then the link as [readable title or domain](url) using the EXACT url.",
+    "- ### Picks — for each pick: **[Title](url)** as a clickable heading (title text links to the EXACT url), then 1–2 sentences of hook (combine editor_note + your voice). Do NOT repeat the link after the hook.",
     "- Use ONLY urls from picks. No new links, no footnotes, no code blocks.",
     "- Keep total under 3500 characters if possible; tight prose.",
   ].join("\n");

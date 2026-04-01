@@ -83,7 +83,7 @@ Enable **Workflow permissions** so releases can be created:
 
 | Name | Purpose |
 |------|---------|
-| `OPENAI_MODEL` | Override model (default in app: `gpt-4o-mini`) |
+| `OPENAI_MODEL` | Override model (default in app: `gpt-4.1-mini`) |
 | `RSS_FEED_URLS` | Optional override; blank value disables RSS (see **RSS feeds** above) |
 
 ### Triggers
